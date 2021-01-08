@@ -1,4 +1,10 @@
 <?php
+/*
+ * Project name: CST126 Milestone 2: Login
+ * Programmer: Isaac Tucker
+ * Date: 01/07/2021
+ * Short synopsis: Here we capture the variables from the form from the form ids and check the databse to see if they exist.
+ */
 //server information
 $servername = "localhost";
 $dbusername = "root";
