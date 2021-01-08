@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<!--
+ * Project name: CST126 Milestone 2: Logging In
+ * Programmer: Isaac Tucker
+ * Date: 01/06/2021
+ * Short synopsis: Here we create the form with minimal CSS to login a user into the database on the loginHandler.php file.
+ -->
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type ="text/css" href="style.css" />
+<title>Login Form</title>
+</head>
+<body>
+	<form action="/cst126milestone/loginHandler.php" method="post">
+		<div class="container">
+			<h1>Login Form:</h1>
+			<hr>
+			<label for="username">User Name:</label>
+			<input type="text" id="username" name="username">
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password">
+			<input type="submit" class="regbtn" value="Submit">
+		</div>
+	</form>
+<p><a href="index.html">Home</a>
+</body>
+</html>
