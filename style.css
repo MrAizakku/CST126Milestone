@@ -39,5 +39,23 @@ hr {
 
 .regbtn:hover { opacity:1; }
 
-/* Add a blue text color to links */
-a { color: dodgerblue; }
+/* Add a text color to links */
+a { color: white; }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: gray;
+  color: black;
+  text-align: center;
+}
+
+.header
+{
+	color:#EEE;
+  	background-color: #4CAF50;
+  	padding:6px;
+  	font-size:1.5em;
+}
