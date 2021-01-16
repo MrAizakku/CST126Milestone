@@ -1,4 +1,10 @@
-<?php
+<!--
+ * Project name: CST126 Milestone 3: Post to Blog
+ * Programmer: Isaac Tucker
+ * Date: 01/15/2021
+ * Short synopsis: This page calls the blog data from the DB and displays all posts associated with the current user.
+ -->
+ <?php
 session_start();
 require('myfuncs.php');
 if (!isset($_SESSION['USERNAME'])) {
@@ -17,7 +23,7 @@ if(mysqli_affected_rows($conn)>0) {
         $title = $row["TITLE"];
         $message = $row["CONTENT"];
         $date = $row["DATE"];
-        echo "<th>Title: " . $title . "</th><tr><td>" . $message . "<p>" . $date . " by " . $uName . "</td></tr>";
+        echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 8px'>" . $date . " by " . $uName . "</td></tr><tr><td>&nbsp;</td></tr>";
     }
     echo "</table></form></div>";
     include './footer.php';

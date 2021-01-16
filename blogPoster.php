@@ -1,9 +1,19 @@
-<?php
+<!--
+ * Project name: CST126 Milestone 3: Post to Blog
+ * Programmer: Isaac Tucker
+ * Date: 01/15/2021
+ * Short synopsis: This is the blogPost handler that takes the input data and saves it to the DB. The profanity filter is also called on the inputs before saving.
+ -->
+ <?php
 session_start();
 require('myfuncs.php');
 
 $btitle = $_POST["blogTitle"];
 $bcontent = $_POST["blogContent"];
+
+$btitle = filterwords($btitle);
+$bcontent = filterwords($bcontent);
+
 
 //is_null($BlogTitle) || empty($BlogTitle))
 if($btitle!="" && $bcontent!="") {

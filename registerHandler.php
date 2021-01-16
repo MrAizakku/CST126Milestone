@@ -1,4 +1,10 @@
-<?php
+<!--
+ * Project name: CST126 Milestone 3: Post to Blog
+ * Programmer: Isaac Tucker
+ * Date: 01/15/2021
+ * Short synopsis: The handler for the register.html form. 
+ -->
+ <?php
 require('myfuncs.php');
 /*
  * Project name: CST126 Milestone 1: Registration

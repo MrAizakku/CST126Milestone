@@ -1,3 +1,9 @@
+<!--
+ * Project name: CST126 Milestone 3: Post to Blog
+ * Programmer: Isaac Tucker
+ * Date: 01/15/2021
+ * Short synopsis: The login handler has been updated to use the function dbConnect() and to pass a message to a result page instead of custom result pages.
+ -->
 <?php
 session_start();
 require('myfuncs.php');

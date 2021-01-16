@@ -1,3 +1,9 @@
+<!--
+ * Project name: CST126 Milestone 3: Post to Blog
+ * Programmer: Isaac Tucker
+ * Date: 01/15/2021
+ * Short synopsis: This page is the form in which a user will input their blog content and hit post to call the blogPoster.php
+ -->
 <?php
 session_start();
 
