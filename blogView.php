@@ -11,19 +11,35 @@ if (!isset($_SESSION['USERNAME'])) {
     header('Location: login.html');
     exit;
 }
+$view = $_GET["MODE"];
+
 require_once 'header.php';
 $userID = getUserId();
-$uName = getUsername();
 $conn = dbConnect();
-$sql_statement = "SELECT * FROM `blogposts` WHERE `USERID` = '$userID'";
+
+if($view == 'ALL') {
+    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, TITLE, DATE, CONTENT, users.FIRSTNAME FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID;";
+} 
+else if($view == 'MY') {
+    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, TITLE, DATE, CONTENT, users.FIRSTNAME FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE `USERID` = '$userID';";
+}
 $result = mysqli_query($conn, $sql_statement);
 if(mysqli_affected_rows($conn)>0) {
     echo "<div><form><h3>Recent Posts</h3><table>";
     while ($row = mysqli_fetch_assoc($result)) {
+        $blogid = $row["blogpostID"]; //for sending in the get
+        $bloguserID = $row["USERID"]; //to determine if the blog pertains to logged in user
         $title = $row["TITLE"];
         $message = $row["CONTENT"];
         $date = $row["DATE"];
-        echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 8px'>" . $date . " by " . $uName . "</td></tr><tr><td>&nbsp;</td></tr>";
+        $author = $row["FIRSTNAME"];
+        echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 8px'>" . $date . " by " . $author . "</td></tr>";
+        if(getUserId() == $bloguserID || $_SESSION['ROLE'] == 'EXEC') 
+        { 
+            echo "<tr><td><a href=blogDelete.php?blogid=" . $blogid . "&userid=" . $bloguserID . " style='color: blue'>Delete</a></td>";
+            echo "<td><a href=blogPost.php?blogid=" . $blogid . "&userid=" . $bloguserID . " style='color: blue'>Update</a></td></tr>";
+        }
+        echo "<tr><td>&nbsp;</td></tr>";
     }
     echo "</table></form></div>";
     include './footer.php';
@@ -31,4 +47,5 @@ if(mysqli_affected_rows($conn)>0) {
     $message = "No posts found.";
     include('result.php');
 }
+
 ?>

@@ -6,6 +6,7 @@
  --> 
  <?php
 function dbConnect() {
+    //$conn = mysqli_connect("127.0.0.1:54019", "azure", "6#vWHD_$", "cst126");
     $conn = mysqli_connect("localhost", "root", "root", "cst126");
     if (!$conn) {
         die("ERROR: Connection failed:" . mysqli_connect_error());
@@ -22,6 +23,16 @@ function getUserId()
     session_start();
     return $_SESSION["USER_ID"];
 }
+function saveUserRole($role)
+{
+    session_start();
+    $_SESSION["ROLE"] = $role;
+}
+function getUserRole()
+{
+    session_start();
+    return $_SESSION["ROLE"];
+}
 function saveUsername($Username) {
     session_start();
     $_SESSION["USERNAME"] = $Username;
@@ -31,7 +42,7 @@ function getUserName() {
     return $_SESSION["USERNAME"];
 }
 function filterwords($content){
-    $badWords = array("shit","fuck","fucked","fucking","fucker","ass","cunt","god","damn","retard");
+    $badWords = array("shit","fuck","fucked","fucking","fucker","ass","cunt","god","damn","retard","bitch");
     $badwordsCount = sizeof($badWords);
     for ($i = 0; $i < $badwordsCount; $i++) {
         $content = preg_replace_callback('/\b' . $badWords[$i] . '\b/i', function($matches){return str_repeat('*', strlen($matches[0]));}, $content);

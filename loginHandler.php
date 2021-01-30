@@ -28,6 +28,7 @@ if($uname!="" && $password!="") {
         if(mysqli_affected_rows($conn)==1) {
             $row = $result->fetch_assoc();	// Read the Row from the Query
             saveUserId($row['ID']);		// Save User ID in the Session
+            saveUserRole($row['ROLE']);		// Save User role in the Session
             saveUsername($row['USERNAME']);		// Save User ID in the Session
             $message = '<h2>Login was successful! Welcome back, ' . $uname . '</h2>';
             include('result.php');
