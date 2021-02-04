@@ -16,10 +16,10 @@
 <a href="index.php">Home</a> | <a href="login.html">Login</a> | <a href="register.html"> Register </a>
 <?php else: ?>
 Welcome 
-<?php echo $_SESSION['USERNAME']; ?>:  <a href="index.php">Home</a> | <a href="logout.php">Logout</a>
-<?php endif; ?> | Blog (<a href="blogPost.php">Post</a> | <a href="blogView.php?MODE=ALL">All Posts</a> | <a href="blogView.php?MODE=MY">My Posts</a>)
+<?php echo $_SESSION['USERNAME']; ?>:  <a href="index.php">Home</a> | <a href="logout.php">Logout</a><?php endif; ?> 
+| Blog (<a href="blogPost.php">Post</a> | <a href="blogView.php?MODE=ALL">All Posts</a> | <a href="blogView.php?MODE=MY">My Posts</a>) | <a href="search.php">Search</a>
 <?php if ($_SESSION['ROLE']=='EXEC'): ?>
-| <a href="users.php">View Users</a>
+|| <a href="users.php">View Users</a>
 <?php endif; ?>
 </div>
 </body>

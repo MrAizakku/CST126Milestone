@@ -49,4 +49,51 @@ function filterwords($content){
     }
     return $content;
 }
+function getUsersByFirstName($searchpattern) {
+    $conn = dbConnect();
+    $sql_statement = "SELECT * FROM `users` where FIRSTNAME LIKE '%" . $searchpattern . "%';";
+    $results = array();
+    if ($result = mysqli_query($conn, $sql_statement)) {  
+       if(mysqli_affected_rows($conn)>0){
+            $index = 0;
+            while($row = mysqli_fetch_assoc($result)){
+                $results[$index] = array(
+                    $row["ID"], $row["FIRSTNAME"], $row["LASTNAME"]
+                );
+                $index++;
+            }
+           $conn->close();
+           return $results;
+        }else {
+            $message = " No results found.";
+            include('result.php');
+        }
+        
+    } else {
+        $message .= "Error: " . $sql_statement . "<br>" . mysqli_error($conn);
+        include('result.php');
+    }
+}
+function getAllUsers()
+{
+    $conn = dbConnect();
+    $sql_statement = "SELECT * FROM `users`";
+    $users = array();
+    
+    if ($result = mysqli_query($conn, $sql_statement)) {
+        $index = 0;
+        while($row = mysqli_fetch_assoc($result)){
+            $users[$index] = array(
+                $row["ID"], $row["FIRSTNAME"], $row["LASTNAME"]
+            );
+            $index++;
+        }
+    } else {
+        $message .= "Error: " . $sql_statement . "<br>" . mysqli_error($conn);
+        include('result.php');
+        
+    }
+    $conn->close();
+    return $users;
+}
 ?>
