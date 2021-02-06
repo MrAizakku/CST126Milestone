@@ -15,6 +15,8 @@ $currUser = getUserId();
 if(isset($_POST['submit'])){ //check if form was submitted
     $comment = $_POST["comment"];
     $comment= filterwords($comment);
+    $rating = $_POST["rating"];
+    echo $rating;
 }
 
 require_once 'header.php';
@@ -26,6 +28,12 @@ if(is_null($comment) && $mode=="Post") {
         <form action="" method="post">
         	<label for="comment">Comment (120 Chars)</label><br>
         	<input type="text" id="comment" name="comment" value="'. $comment . '"><br>
+        	    
+            <input type="radio" id="good" name="rating" value="1">
+            <label for="male">Thumbs Up!</label><br>
+            <input type="radio" id="bad" name="rating" value="0">
+            <label for="female">Thumbs Down!</label><br>
+        	    
         	<input type="submit" id="button" name="submit" class="regbtn" value="Post">
         </form>
         </div>';
@@ -65,7 +73,7 @@ if(is_null($comment) && $mode=="Post") {
     if($mode=="Post") {
         $date = date('Y-m-d H:i:s');
         
-        $sql_statement = "INSERT INTO `comments` (`COMMENTID`, `BLOGPOSTID`, `COMMENTAUTHORID`, `COMMENT`, `DATE`) VALUES (NULL, '$blogid', '$currUser', '$comment', '$date')";
+        $sql_statement = "INSERT INTO `comments` (`COMMENTID`, `BLOGPOSTID`, `COMMENTAUTHORID`, `COMMENT`, `DATE`, `RATING`) VALUES (NULL, '$blogid', '$currUser', '$comment', '$date', '$rating')";
         
         if ($conn->query($sql_statement) === TRUE) {
             $message = '<h2>Comment Posted successfully: <p> Comment: ' . $comment . '<p> by: ' . getUserName() . ' ' . $date . '</h2>';

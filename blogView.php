@@ -17,10 +17,10 @@ require_once 'header.php';
 $userID = getUserId();
 $conn = dbConnect();
 if($view == 'ALL') {
-    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, users.FIRSTNAME, TITLE, blogposts.DATE AS BlogPostDate, CONTENT, (SELECT COUNT(COMMENT) FROM `comments` WHERE `BLOGPOSTID` = blogposts.ID) as COMMENTCOUNT FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID;";
+    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, users.FIRSTNAME, TITLE, blogposts.DATE AS BlogPostDate, CONTENT, (SELECT COUNT(COMMENT) FROM `comments` WHERE `BLOGPOSTID` = blogposts.ID) as COMMENTCOUNT, (SELECT COUNT(RATING) FROM `comments` WHERE RATING = 1 AND `BLOGPOSTID` = blogposts.ID) AS GOOD, (SELECT COUNT(RATING) FROM `comments` WHERE RATING = 0 AND `BLOGPOSTID` = blogposts.ID) AS BAD FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID;";
 } 
 else if($view == 'MY') {
-    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, users.FIRSTNAME, TITLE, blogposts.DATE AS BlogPostDate, CONTENT, (SELECT COUNT(COMMENT) FROM `comments` WHERE `BLOGPOSTID` = blogposts.ID) as COMMENTCOUNT FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE `USERID` = '$userID';";   
+    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, users.FIRSTNAME, TITLE, blogposts.DATE AS BlogPostDate, CONTENT, (SELECT COUNT(COMMENT) FROM `comments` WHERE `BLOGPOSTID` = blogposts.ID) as COMMENTCOUNT, (SELECT COUNT(RATING) FROM `comments` WHERE RATING = 1 AND `BLOGPOSTID` = blogposts.ID) AS GOOD, (SELECT COUNT(RATING) FROM `comments` WHERE RATING = 0 AND `BLOGPOSTID` = blogposts.ID) AS BAD FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE `USERID` = '$userID';";   
 }
 $result = mysqli_query($conn, $sql_statement);
 if(mysqli_affected_rows($conn)>0) {
@@ -33,8 +33,14 @@ if(mysqli_affected_rows($conn)>0) {
         $date = $row["DATE"];
         $author = $row["FIRSTNAME"];
         $count = $row["COMMENTCOUNT"];
+        $good = $row["GOOD"];
+        $bad =$row["BAD"];
+        $color = 'green';
+        if($bad > $good && $bad > 0) {
+            $color = 'red';
+        } 
         echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 8px'>" . $date . " by " . $author . "</td></tr>";
-        echo "<tr><td><a href=comment.php?blogid=" . $blogid . " style='color: blue'>Comments (" . $count . ")</a></td>";
+        echo "<tr><td><a href=comment.php?blogid=" . $blogid . " style='color: ".$color."'>Comments (" . $count . ")</a></td>";
         if(getUserId() == $bloguserID || $_SESSION['ROLE'] == 'EXEC') 
         { 
             echo "<tr><td><a href=blogDelete.php?blogid=" . $blogid . "&userid=" . $bloguserID . " style='color: blue'>Delete</a></td>";

@@ -13,7 +13,7 @@ $userID = getUserId();
 $conn = dbConnect();
 
 $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, TITLE, DATE, CONTENT, users.FIRSTNAME FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE blogposts.ID = '$blogid';";
-                
+
 $result = mysqli_query($conn, $sql_statement);
 if(mysqli_affected_rows($conn)>0) {
     echo "<div><form><h3>Comment Page:</h3><table>";
@@ -33,7 +33,7 @@ if(mysqli_affected_rows($conn)>0) {
     echo "<tr><td>&nbsp&nbsp&nbsp&nbsp<a href=commentPoster.php?blogid=" . $blogid . "&mode=Post style='color: blue; font-size: 10px;'>Post Comment</a></td></tr>";
     echo "</table></form></div><hr>";
     
-    $sql_statement = "SELECT COMMENTID, COMMENTAUTHORID, COMMENT, users.FIRSTNAME, comments.DATE FROM `comments` JOIN `users` ON comments.COMMENTAUTHORID = users.ID WHERE comments.BLOGPOSTID = '$blogid';";
+    $sql_statement = "SELECT COMMENTID, COMMENTAUTHORID, COMMENT, users.FIRSTNAME, comments.DATE, RATING FROM `comments` JOIN `users` ON comments.COMMENTAUTHORID = users.ID WHERE comments.BLOGPOSTID = '$blogid';";
     
     $result = mysqli_query($conn, $sql_statement);
     if(mysqli_affected_rows($conn)>0) {
@@ -44,7 +44,14 @@ if(mysqli_affected_rows($conn)>0) {
             $comment = $row["COMMENT"];
             $commentauthor = $row["FIRSTNAME"];
             $commentdate = $row["DATE"];
-            echo "<tr><td>" . $comment . "<p style='font-size: 8px'>" . $commentdate . " by " . $commentauthor . "</td></tr>";
+            $rating = $row["RATING"];
+            echo "<tr><td>" . $comment . "<p style='font-size: 10px'>" . $commentdate . " by " . $commentauthor . "</td></tr>";
+            if($rating == 0) {
+                echo "<tr><td style='font-size: 10px;'> Rating: <span style='color: red;'>Thumbs Down!</span></td></tr>";
+            } else {
+                echo "<tr><td style='font-size: 10px;'> Rating: <span style='color: green;'>Thumbs Up!</span></td></tr>";
+            }
+            ;
             if(getUserId() == $commentauthorid || $_SESSION['ROLE'] == 'EXEC')
             {
                 echo "<tr><td><a href=blogDelete.php?commentid=" . $commentid . "&userid=" . $commentauthorid . " style='color: blue'>Delete</a></td>";
