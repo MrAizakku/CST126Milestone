@@ -96,4 +96,44 @@ function getAllUsers()
     $conn->close();
     return $users;
 }
+function getBlogUserID($blogid)
+{
+    $conn = dbConnect();
+    $sql_statement = "SELECT USERID FROM `blogposts` WHERE `ID` = '$blogid';";
+    
+    if ($result = mysqli_query($conn, $sql_statement)) {
+        if(mysqli_affected_rows($conn)>0){
+            $row = mysqli_fetch_assoc($result);
+            $bloguserID = $row["USERID"];
+            $conn->close();
+            return $bloguserID;
+        }else {
+            $message = "Access restricted.";
+            include('result.php');
+        }
+    } else {
+        $message .= "Error: " . $sql_statement . "<br>" . mysqli_error($conn);
+        include('result.php');
+    }
+}
+function getCommentUserID($commentid)
+{
+    $conn = dbConnect();
+    $sql_statement = "SELECT COMMENTAUTHORID FROM `comments` WHERE `COMMENTID` = '$commentid';";
+    
+    if ($result = mysqli_query($conn, $sql_statement)) {
+        if(mysqli_affected_rows($conn)>0){
+            $row = mysqli_fetch_assoc($result);
+            $commentuserID = $row["COMMENTAUTHORID"];
+            $conn->close();
+            return $commentuserID;
+        }else {
+            $message = "Access restricted.";
+            include('result.php');
+        }
+    } else {
+        $message .= "Error: " . $sql_statement . "<br>" . mysqli_error($conn);
+        include('result.php');
+    }
+}
 ?>

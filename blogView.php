@@ -16,12 +16,11 @@ $view = $_GET["MODE"];
 require_once 'header.php';
 $userID = getUserId();
 $conn = dbConnect();
-
 if($view == 'ALL') {
-    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, TITLE, DATE, CONTENT, users.FIRSTNAME FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID;";
+    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, users.FIRSTNAME, TITLE, blogposts.DATE AS BlogPostDate, CONTENT, (SELECT COUNT(COMMENT) FROM `comments` WHERE `BLOGPOSTID` = blogposts.ID) as COMMENTCOUNT FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID;";
 } 
 else if($view == 'MY') {
-    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, TITLE, DATE, CONTENT, users.FIRSTNAME FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE `USERID` = '$userID';";
+    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, users.FIRSTNAME, TITLE, blogposts.DATE AS BlogPostDate, CONTENT, (SELECT COUNT(COMMENT) FROM `comments` WHERE `BLOGPOSTID` = blogposts.ID) as COMMENTCOUNT FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE `USERID` = '$userID';";   
 }
 $result = mysqli_query($conn, $sql_statement);
 if(mysqli_affected_rows($conn)>0) {
@@ -33,7 +32,9 @@ if(mysqli_affected_rows($conn)>0) {
         $message = $row["CONTENT"];
         $date = $row["DATE"];
         $author = $row["FIRSTNAME"];
+        $count = $row["COMMENTCOUNT"];
         echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 8px'>" . $date . " by " . $author . "</td></tr>";
+        echo "<tr><td><a href=comment.php?blogid=" . $blogid . " style='color: blue'>Comments (" . $count . ")</a></td>";
         if(getUserId() == $bloguserID || $_SESSION['ROLE'] == 'EXEC') 
         { 
             echo "<tr><td><a href=blogDelete.php?blogid=" . $blogid . "&userid=" . $bloguserID . " style='color: blue'>Delete</a></td>";

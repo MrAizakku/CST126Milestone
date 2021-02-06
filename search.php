@@ -44,7 +44,7 @@ if(empty($title) && empty($content) && empty($author) && empty($date)) {
     include('result.php');
 } else {
     $conn = dbConnect();
-    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, TITLE, DATE, CONTENT, users.FIRSTNAME FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE ";
+    $sql_statement = "SELECT blogposts.ID AS blogpostID, USERID, users.FIRSTNAME, TITLE, blogposts.DATE AS BlogPostDate, CONTENT, (SELECT COUNT(COMMENT) FROM `comments` WHERE `BLOGPOSTID` = blogposts.ID) as COMMENTCOUNT FROM `blogposts` JOIN `users` ON blogposts.USERID = users.ID WHERE ";
     
     $present = 0;
     $additions = 0;
@@ -84,7 +84,9 @@ if(empty($title) && empty($content) && empty($author) && empty($date)) {
             $message = $row["CONTENT"];
             $date = $row["DATE"];
             $author = $row["FIRSTNAME"];
+            $count = $row["COMMENTCOUNT"];
             echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 8px'>" . $date . " by " . $author . "</td></tr>";
+            echo "<tr><td><a href=comment.php?blogid=" . $blogid . " style='color: blue'>Comments (" . $count . ")</a></td>";
             if(getUserId() == $bloguserID || $_SESSION['ROLE'] == 'EXEC')
             {
                 echo "<tr><td><a href=blogDelete.php?blogid=" . $blogid . "&userid=" . $bloguserID . " style='color: blue'>Delete</a></td>";
