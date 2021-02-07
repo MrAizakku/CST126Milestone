@@ -16,7 +16,7 @@ if(isset($_POST['submit'])){ //check if form was submitted
     $comment = $_POST["comment"];
     $comment= filterwords($comment);
     $rating = $_POST["rating"];
-    echo $rating;
+    if(is_null($rating)) { $rating = 0; }
 }
 
 require_once 'header.php';
@@ -31,7 +31,7 @@ if(is_null($comment) && $mode=="Post") {
         	    
             <input type="radio" id="good" name="rating" value="1">
             <label for="male">Thumbs Up!</label><br>
-            <input type="radio" id="bad" name="rating" value="0">
+            <input type="radio" id="bad" name="rating" value="0" checked>
             <label for="female">Thumbs Down!</label><br>
         	    
         	<input type="submit" id="button" name="submit" class="regbtn" value="Post">
@@ -60,6 +60,12 @@ if(is_null($comment) && $mode=="Post") {
         <form action="" method="post">
         	<label for="comment">Comment (120 Chars)</label><br>
         	<input type="text" id="comment" name="comment" value="'. $comment . '"><br>
+        	    
+            <input type="radio" id="good" name="rating" value="1">
+            <label for="male">Thumbs Up!</label><br>
+            <input type="radio" id="bad" name="rating" value="0" checked>
+            <label for="female">Thumbs Down!</label><br>
+        	    
         	<input type="submit" id="button" name="submit" class="regbtn" value="Post">
         </form>
         </div>';
@@ -83,7 +89,7 @@ if(is_null($comment) && $mode=="Post") {
             include('result.php');
         }
     } else if ($mode=="Update") {
-        $sql_statement = "UPDATE `comments` SET `COMMENT` = '$comment' WHERE `comments`.`COMMENTID` = '$commentid';";
+        $sql_statement = "UPDATE `comments` SET `COMMENT` = '$comment', `RATING` = '$rating' WHERE `comments`.`COMMENTID` = '$commentid';";
         
         if ($conn->query($sql_statement) === TRUE) {
             $message = '<h2>Comment Updated successfully: <p> Comment: ' . $comment . '</h2>';

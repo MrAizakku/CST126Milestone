@@ -30,7 +30,7 @@ if(mysqli_affected_rows($conn)>0) {
         $bloguserID = $row["USERID"]; //to determine if the blog pertains to logged in user
         $title = $row["TITLE"];
         $message = $row["CONTENT"];
-        $date = $row["DATE"];
+        $date = $row["BlogPostDate"];
         $author = $row["FIRSTNAME"];
         $count = $row["COMMENTCOUNT"];
         $good = $row["GOOD"];
@@ -39,7 +39,7 @@ if(mysqli_affected_rows($conn)>0) {
         if($bad > $good && $bad > 0) {
             $color = 'red';
         } 
-        echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 8px'>" . $date . " by " . $author . "</td></tr>";
+        echo "<th style='text-align: left'>Title: " . $title . "</th><tr><td>" . $message . "<p style='font-size: 10px'>" . $date . " by " . $author . "</td></tr>";
         echo "<tr><td><a href=comment.php?blogid=" . $blogid . " style='color: ".$color."'>Comments (" . $count . ")</a></td>";
         if(getUserId() == $bloguserID || $_SESSION['ROLE'] == 'EXEC') 
         { 
