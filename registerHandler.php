@@ -21,19 +21,24 @@ $username = $_POST["username"];
 $password = $_POST["password"];
 
 if($firstname != "" && $lastname != "" && $DOB != "" && $username != "" && $password != ""){
-    $conn = dbConnect();
-    $sql_statement = "INSERT INTO `users` (`ID`, `FIRSTNAME`, `LASTNAME`, `DOB`, `USERNAME`, `PASSWORD`) VALUES (NULL, '$firstname', '$lastname', '$DOB', '$username', '$password')";
-    
-    if ($conn->query($sql_statement) === TRUE) {
-        $message = "Registration successful. You may now log in. <br />";
+    if(UsernameExists($username)) {
+        $message = "That username is already taken. <br />";
         include('result.php');
     } else {
-        $message = "Error: " . $sql_statement . "<br>" . $conn->error;
-        include('result.php');
+        $conn = dbConnect();
+        $sql_statement = "INSERT INTO `users` (`ID`, `FIRSTNAME`, `LASTNAME`, `DOB`, `USERNAME`, `PASSWORD`) VALUES (NULL, '$firstname', '$lastname', '$DOB', '$username', '$password')";
+        
+        if ($conn->query($sql_statement) === TRUE) {
+            $message = "Registration successful. You may now log in. <br />";
+            include('result.php');
+        } else {
+            $message = "Error: " . $sql_statement . "<br>" . $conn->error;
+            include('result.php');
+        }
+        $conn->close();
     }
-    $conn->close();
 } else {
-    $message = "Please fill out the registration form correctly.";
+    $message = "You left one of the fields blank; complete the form completely.";
     include('result.php');
 }
 ?>

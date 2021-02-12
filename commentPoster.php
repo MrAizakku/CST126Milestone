@@ -74,7 +74,7 @@ if(is_null($comment) && $mode=="Post") {
         include('result.php');
     }
     $conn->close();
-} else if (isset($comment)){ //if form is submitted
+} else if (isset($comment) && $comment != ""){ //if form is submitted
     $conn = dbConnect();
     if($mode=="Post") {
         $date = date('Y-m-d H:i:s');
@@ -100,6 +100,9 @@ if(is_null($comment) && $mode=="Post") {
         }
     }
     $conn->close();
+} else {
+    $message = "You need to say something in order to 'comment'!";
+    include('result.php');
 }
 include './footer.php';
 ?>

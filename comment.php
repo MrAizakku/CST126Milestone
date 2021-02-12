@@ -6,7 +6,14 @@ if (!isset($_SESSION['USERNAME'])) {
     exit;
 }
 require_once 'header.php';
-
+?>
+<script>
+    function ConfirmDelete()
+    {
+      return confirm("Are you sure you want to delete?");
+    }
+</script>
+<?php 
 $blogid = $_GET["blogid"];
 
 $userID = getUserId();
@@ -54,7 +61,7 @@ if(mysqli_affected_rows($conn)>0) {
             ;
             if(getUserId() == $commentauthorid || $_SESSION['ROLE'] == 'EXEC')
             {
-                echo "<tr><td><a href=blogDelete.php?commentid=" . $commentid . "&userid=" . $commentauthorid . " style='color: blue'>Delete</a></td>";
+                echo "<tr><td><a href='blogDelete.php?commentid=" . $commentid . "&userid=" . $commentauthorid . "' onclick='return ConfirmDelete()' style='color: blue'>Delete</a></td>";
                 echo "<td><a href=commentPoster.php?commentid=" . $commentid . "&userid=" . $commentauthorid . "&mode=Update style='color: blue'>Update</a></td></tr>";
             }
             echo "<tr><td>&nbsp;</td></tr>";

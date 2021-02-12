@@ -116,6 +116,23 @@ function getBlogUserID($blogid)
         include('result.php');
     }
 }
+function UsernameExists($uname)
+{
+    $conn = dbConnect();
+    $sql_statement = "SELECT USERNAME FROM `users` WHERE `USERNAME` = '$uname';";
+    
+    if ($result = mysqli_query($conn, $sql_statement)) {
+        if(mysqli_affected_rows($conn)>0){
+            return true;
+        }else {
+            return false;
+        }
+    } else {
+        $message .= "Error: " . $sql_statement . "<br>" . mysqli_error($conn);
+        include('result.php');
+    }
+    $conn->close();
+}
 function getCommentUserID($commentid)
 {
     $conn = dbConnect();
@@ -135,5 +152,6 @@ function getCommentUserID($commentid)
         $message .= "Error: " . $sql_statement . "<br>" . mysqli_error($conn);
         include('result.php');
     }
+    $conn->close();
 }
 ?>

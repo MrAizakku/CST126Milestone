@@ -18,7 +18,7 @@ $bcontent = filterwords($bcontent);
 
 
 //is_null($BlogTitle) || empty($BlogTitle))
-if(!is_null($btitle) && !is_null($bcontent)) {
+if(!is_null($btitle) && !is_null($bcontent) && $btitle != "" && $bcontent != "") {
     $conn = dbConnect();
     
     if($mode == "Post") {
